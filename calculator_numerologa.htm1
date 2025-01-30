@@ -1,0 +1,85 @@
+import React, { useState } from "react";
+
+const Calculator = () => {
+  const [birthdate, setBirthdate] = useState("");
+  const [result, setResult] = useState(null);
+
+  const calculateNumbers = () => {
+    if (!birthdate) return;
+    
+    const [year, month, day] = birthdate.split("-").map(Number);
+    
+    const sumDigits = (num) => num.toString().split("").reduce((acc, digit) => acc + Number(digit), 0);
+    
+    const getSingleDigit = (num) => {
+      while (num > 9) {
+        num = sumDigits(num);
+      }
+      return num;
+    };
+
+    const consciousnessNumber = getSingleDigit(day);
+    const missionNumber = getSingleDigit(sumDigits(day) + sumDigits(month) + sumDigits(year));
+    const financialCode = `${getSingleDigit(day)}${getSingleDigit(month)}${getSingleDigit(year)}${getSingleDigit(getSingleDigit(day) + getSingleDigit(month) + getSingleDigit(year))}`;
+    
+    const explanations = {
+      1: "Число Сознания 1: Лидер, стратег, мотиватор. Человек, стремящийся к власти, обладающий стратегическим мышлением. Важно развивать индивидуальность и не идеализировать окружающих.",
+      2: "Число Сознания 2: Дипломат, гармонизатор, чуткий и эмпатичный. Часто нуждается в партнёрстве и одобрении, важно развивать самостоятельность.",
+      3: "Число Сознания 3: Творческая личность, новатор, вдохновитель. Любит учить и делиться знаниями. Важно контролировать эмоции и завершать начатое.",
+      4: "Число Сознания 4: Трудяга, системный человек, любит стабильность. Важно выходить за рамки и не зацикливаться на материальном.",
+      5: "Число Сознания 5: Авантюрист, путешественник, жаждет свободы. Важно найти баланс между независимостью и ответственностью.",
+      6: "Число Сознания 6: Покровитель, заботливый человек. Сильные семейные ценности, важно не перегружать себя чужими проблемами.",
+      7: "Число Сознания 7: Аналитик, философ, человек с глубоким внутренним миром. Важно развивать коммуникацию и не уходить в себя.",
+      8: "Число Сознания 8: Бизнесмен, управленец, стремится к материальному успеху. Важно развивать духовность и не быть чрезмерно жестким.",
+      9: "Число Сознания 9: Гуманист, наставник, мудрый человек. Важно не жертвовать собой ради других.",
+    };
+    
+    const missionExplanations = {
+      1: "Миссия 1: Ваша жизненная задача связана с властью, лидерством и индивидуальностью. Вы стремитесь к независимости, важно развивать ответственность и стратегическое мышление.",
+      2: "Миссия 2: Гармонизация отношений, партнёрство и поддержка. Важно научиться сохранять баланс и не зависеть от чужого мнения.",
+      3: "Миссия 3: Раскрытие творческого потенциала, вдохновение других. Важно не бояться выражать себя и доводить начатое до конца.",
+      4: "Миссия 4: Организованность, системный подход, работа на результат. Важно научиться адаптироваться к изменениям и не зацикливаться на стабильности.",
+      5: "Миссия 5: Свобода, перемены, новые возможности. Важно научиться сохранять дисциплину и брать ответственность за свои решения.",
+      6: "Миссия 6: Забота, защита, поддержка других. Важно не перегружать себя чужими проблемами и не забывать о своих потребностях.",
+      7: "Миссия 7: Познание, анализ, внутренний рост. Важно не уходить в одиночество и развивать коммуникацию.",
+      8: "Миссия 8: Управление, финансы, материальное благополучие. Важно соблюдать баланс между материальным и духовным.",
+      9: "Миссия 9: Духовное развитие, наставничество, помощь другим. Важно не жертвовать собой ради других и развивать свои таланты.",
+    };
+    
+    setResult({
+      consciousnessNumber,
+      consciousnessExplanation: explanations[consciousnessNumber],
+      missionNumber,
+      missionExplanation: missionExplanations[missionNumber],
+      financialCode,
+      financialExplanation: `Ваш финансовый код ${financialCode}. Используйте его в паролях, номерах телефонов и других важных аспектах вашей жизни.`,
+    });
+  };
+
+  return (
+    <div className="p-4 max-w-md mx-auto bg-white rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-4">Калькулятор Чисел</h2>
+      <input
+        type="date"
+        value={birthdate}
+        onChange={(e) => setBirthdate(e.target.value)}
+        className="p-2 border rounded w-full mb-4"
+      />
+      <button
+        onClick={calculateNumbers}
+        className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+      >
+        Рассчитать
+      </button>
+      {result && (
+        <div className="mt-4">
+          <p><strong>Число Сознания:</strong> {result.consciousnessNumber} - {result.consciousnessExplanation}</p>
+          <p><strong>Миссия:</strong> {result.missionNumber} - {result.missionExplanation}</p>
+          <p><strong>Финансовый код:</strong> {result.financialCode} - {result.financialExplanation}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Calculator;
